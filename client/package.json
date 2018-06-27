@@ -1,5 +1,5 @@
 {
-  "name": "react-client-server-starter-client",
+  "name": "greendr-client",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:4000/",
@@ -32,11 +32,11 @@
   },
   "scripts": {
     "build-css": "node-sass --include-path ./node_modules src/ -o src",
-    "watch-css": "yarn run build-css && node-sass --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "watch-css": "npm run build-css && node-sass --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts-ts start",
     "start": "npm-run-all -p watch-css start-js",
     "lint": "tslint src",
-    "build": "yarn run build-css && react-scripts-ts build && rm -rf ../build/static && cp -rf build ../",
+    "build": "npm run build-css && react-scripts-ts build && rm -rf ../build/static && cp -rf build ../",
     "coverage": "react-scripts-ts test --env=jsdom --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.ts --collectCoverageFrom=!src/tests/**",
     "test": "react-scripts-ts test --env=jsdom"
   }
