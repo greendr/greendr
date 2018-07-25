@@ -1,0 +1,75 @@
+*{margin:0;padding:0;background:white;}
+body{overflow:hidden;}
+
+.split {
+  height: 100%;
+  width: 33%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+
+.plane {
+  width:50px;
+  height:50px;
+  display: inline-block;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/1/17/Plane_icon_nose_up.svg);
+  background-size: 50px;
+}
+
+.plane-carrier {
+  width:100px;
+  height:54px;
+  display: inline-block;
+  background: url(http://getdrawings.com/img/aircraft-carrier-silhouette-6.jpg);
+  background-size: 100px;
+}
+
+.frig {
+  width:50px;
+  height:50px;
+  float: left;
+  display: inline-block;
+  background: url(http://pngimg.com/uploads/refrigerator/refrigerator_PNG9047.png);
+  background-size: 50px;
+}
+
+.house {
+  width:50px;
+  height:50px;
+  float: left;
+  display: inline-block;
+  background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7Kq3kla3VlWn5Xhiua34PCw7MTYk7fdkOJYM6w9sFpFv32CtD);
+  background-size: 50px;
+}
+  
+.truck {
+  width:100px;
+  height:50px;
+  float: left;
+  display: inline-block;
+  background: url(http://www.clker.com/cliparts/f/4/H/8/h/J/semi-truck-mack-md.png);
+  background-size: 100px;
+}
