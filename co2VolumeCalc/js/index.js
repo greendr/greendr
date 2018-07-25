@@ -50,4 +50,4 @@ function setCO2Weight(weight) {
   setCO2volume(weight * 19.278);
 }
 
-setCO2Weight(1000);
+setCO2Weight(1000000);

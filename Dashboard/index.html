@@ -1,0 +1,151 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Product example for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    
+
+    <!-- Custom styles for this template -->
+    <link href="css/product.css" rel="stylesheet">
+    <link href="css/co2calcStyle.css" rel="stylesheet" >
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AlorKbmW2IPQ-j2fxtyBTz98Wuj2gle36XnzCJUREIjTqxYlI3aKInjXBKLydX1W' async defer></script>
+    <script src="js/map.js"></script>
+    
+  </head>
+
+  <body>
+
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light ">
+      <div class="col-md-5 p-lg-5 mx-auto">
+        <h1 class="display-4 font-weight-normal"><img src="images/greendr-logo.png" class=""/></h1>
+        <div class="lead font-weight-normal">
+            
+
+              Food Type: 
+                <select id="comparefood">
+                    <option value="Lamb" selected="selected">Lamb</option>
+            <option value="Beef">Beef</option>
+            <option value="Cheese">Cheese</option>
+            <option value="Pork">Pork</option>
+            <option value="Turkey">Turkey</option>
+            <option value="Chicken">Chicken</option>
+            <option value="Tuna">Tuna</option>
+            <option value="Eggs">Eggs</option>
+            <option value="Potatoes">Potatoes</option>
+            <option value="Rice">Rice</option>
+            <option value="Nuts">Nuts</option>
+            <option value="Beans/tofu">Beans/tofu</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Milk">Milk</option>
+            <option value="Fruit">Fruit</option>
+            <option value="Lentils">Lentils</option>
+
+                </select> 
+                
+                <br/><br/>
+                <input type="button" value="Find the equivalent" onclick="compareisochroneSearch()"/> 
+        </div>
+      </div>
+    </div>
+
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3 wrapper">
+      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white xoverflow-hidden">
+        <div class="my-3 py-3">
+          <h2 class="display-5">CO2 Volume</h2>
+          <p class="lead">How many objects fit in the consumed size of CO2</p>
+        </div>
+        <div class="bg-light shadow-sm mx-auto" style="width: 80%;  border-radius: 21px 21px 0 0;">
+          
+          <div id="amountDay" class="space">
+            <p id="totalAmountDay" class="totalAmount"></p>
+            <div  id="containerDay" class="text-center">
+            </div>
+          </div>
+          <div id="amountMonth" class="space">
+              <p id="totalAmountMonth" class="totalAmount"></p>
+              <div  id="containerMonth" class="text-center">
+              </div>
+            </div>
+            <div id="amountYear" class="space">
+                <p id="totalAmountYear" class="totalAmount"></p>
+                <div  id="containerYear" class="text-center">
+                </div>
+              </div>
+        </div>
+      </div>
+      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white xoverflow-hidden">
+        <div class="my-3 p-3">
+          <h2 class="display-5">Travel Distance</h2>
+          <p class="lead">TBD</p>
+        </div>
+        <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+
+            <p>Which city you would like to pick?  </p>  
+            <select id="cityList" onchange="GetMap()">
+                    <option value="Istanbul, Turkey" selected="selected">Istanbul, Turkey</option>
+                    <option value="Amsterdam, Netherlands">Amsterdam, Netherlands</option>
+                    <option value="Athens, Greece">Athens, Greece</option>
+                    <option value="Barcelona, Spain">Barcelona, Spain</option>
+                    <option value="Beijing, China">Beijing, China</option>
+                    <option value="London, England">London, England</option>
+                    <option value="Kuala Lumpur, Malaysia">Kuala Lumpur, Malaysia</option>
+                    <option value="Munich, Germany">Munich, Germany</option>
+                    <option value="New York, USA">New York, USA</option>
+                    <option value="Singapore, Singapore">Singapore, Singapore</option>
+                    <option value="Tel Aviv, Israel">Tel Aviv, Israel</option>
+                    <option value="Tokyo, Japan">Tokyo, Japan</option>
+                    
+                    
+            <select>
+            <br/><br/>
+            <div id="myMap" style="position:relative;height:600px;"></div>
+            <img id="loadingIcon" src="/images/loadingIcon.gif" style="position:absolute;top:250px;left:350px;display:none;"/>
+            <fieldset style="width:800px;margin-top:10px;">
+                <legend>Calculate Ecological Cost</legend>
+                Please pick any food and total grams you would like to consume then see the  physical representations of carbon dioxide emissions and how it is affected by our choices.
+                <br/><br/>
+                In this demo you'll see if you eat below foods what's equivalent of the carbon dioxide emissions if you drive a car. 
+        
+                <br/><br/>
+                Total food (gr): <input type="text" id="foodgrams" value="150">
+                <br/><br/>
+                
+                <input type="button" value="Clear Map" onclick="clearMap()"/>
+        
+                <br/><br/>
+                Total : <output id="totalvalue" />
+            </fieldset>
+        
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="js/holder.min.js"></script>
+    <script src="js/co2calc.js"></script>
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+    </script>
+  </body>
+</html>
