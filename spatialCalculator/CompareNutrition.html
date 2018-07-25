@@ -37,19 +37,13 @@
             center: new Microsoft.Maps.Location(lat, lon),
             zoom: 11
         });
-        
-        
-
+    
         //Add some random pushpins to a layer on the map. 
         pinLayer = new Microsoft.Maps.Layer();
         map.layers.insert(pinLayer);
-        var pushpins = Microsoft.Maps.TestDataGenerator.getPushpins(10, map.getBounds(), { color: 'purple' });
+        var pushpins = Microsoft.Maps.TestDataGenerator.getPushpins();
         //Add the center point if it's needed.
-        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(lat, lon), { color: 'black' });
-        pushpins.push(pin);
         pinLayer.add(pushpins);
-
-        
 
         //Load the Spatial Math module.
         Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath');
@@ -57,7 +51,6 @@
 
     function iscomparechecked()
     {  
-        //document.getElementById("foodType").value
         if(iscompare){ iscompare = false;}
         else { iscompare = true}
         console.log(iscompare)
@@ -65,11 +58,9 @@
 
     function clearMap()
     {
-        //map.layers.clear();
         map.entities.clear();
         document.getElementById("totalvalue").value = "";
         PolyColor = 0;
-        //map.entities.remove(searchArea);
     }
     
     function compareisochroneSearch()
@@ -79,8 +70,6 @@
             console.log(element)
             isochroneSearch(element);
         });
-        
-
     }
 
     function isochroneSearch(selectedfood) {
@@ -132,13 +121,7 @@
              console.log("removed")
              }
          }
-        // Get all the pushpins from the pinLayer.
-        var pins = pinLayer.getPrimitives();
-        //Clear any previously selected data.
-        for (var i = 0; i < pins.length; i++) {
-            pins[i].setOptions({ color: 'purple' });
-        }
-        
+
         //Create the REST isochrone query URL.
         var url = 'https://dev.virtualearth.net/REST/v1/Routes/Isochrones?&optimize=distance&travelMode=driving';
         //Use the center of the map as the waypoint for the isochrone.
@@ -160,7 +143,6 @@
             searchArea = getIsochronePolygons(data);
             if (searchArea) {
                 //Find all intersection pushpins in the search area polygon.
-                var selectedPins = findIntersectingData(searchArea);
                 //Do something with the selected pushpins.
                 //Add the isochrone polygon to the map for visualization.
                 map.entities.push(searchArea);
@@ -212,40 +194,7 @@
         return null;
     }
     //Find all pushpins on the map that intersect with the search area.
-    function findIntersectingData(searchArea) {
-        if (searchArea) {
-            //Get all the pushpins from the pinLayer.
-            var pins = pinLayer.getPrimitives();
-            //Using spatial math find all pushpins that intersect with the drawn search area.
-            //The returned data is a copy of the intersecting data and not a reference to the original shapes, 
-            //so making edits to them will not cause any updates on the map.
-            var intersectingPins = Microsoft.Maps.SpatialMath.Geometry.intersection(pins, searchArea);
-            //The data returned by the intersection function can be null, a single shape, or an array of shapes. 
-            if (intersectingPins) {
-                //For ease of usem wrap individudal shapes in an array.
-                if (intersectingPins && !(intersectingPins instanceof Array)) {
-                    intersectingPins = [intersectingPins];
-                }
-                var selectedPins = [];
-                
-                //Loop through and map the intersecting pushpins back to their original pushpins by comparing their coordinates.
-                for (var j = 0; j < intersectingPins.length; j++) {
-                    for (var i = 0; i < pins.length; i++) {     
-                        if (Microsoft.Maps.Location.areEqual(pins[i].getLocation(), intersectingPins[j].getLocation())) {
-                            //Set the selected pin color to red.
-                            pins[i].setOptions({ color: 'red' });
-                            selectedPins.push(pins[i]);
-                            break;
-                        }
-                    }
-                }
-               
-                //Return the pushpins that were selected.
-                return selectedPins;
-            }
-        }
-        return null;
-    }
+   
     function callRestServiceCORS(requestUrl, callback, errorCallback) {
         if (callback) {
             var http = new XMLHttpRequest();
@@ -295,15 +244,16 @@
         In this demo you'll see if you eat below foods what's equivalent of the carbon dioxide emissions if you drive a car. 
 
         <br/><br/>
-        Total food (gr): <input type="text" id="foodgrams" value="150">
+        Total food (gr): <input type="text" id="foodgrams" value="300">
         <br/><br/>
         Food Type: 
         <select id="comparefood">
             <option value="Lamb-Beef" selected="selected">Lamb vs Beef</option>
+            <option value="Lamb-Lentils">Lamb vs Lentils</option>
+            <option value="Beef-Beans/tofu">Beef vs Beans/tofu</option>
             <option value="Beef-Cheese">Beef vs Cheese</option>
             <option value="Turkey-Chicken">Turkey vs Chicken</option>
             <option value="Chicken-Tuna">Chicken vs Tuna</option>
-            <option value="Beef-Beans/tofu">Beef vs Beans/tofu</option>
             <option value="Vegetables-Milk">Vegetables vs Milk</option>
             <option value="Fruit-Lentils">Fruit vs Lentils</option>
         </select> 

@@ -43,10 +43,7 @@
         //Add some random pushpins to a layer on the map. 
         pinLayer = new Microsoft.Maps.Layer();
         map.layers.insert(pinLayer);
-        var pushpins = Microsoft.Maps.TestDataGenerator.getPushpins(10, map.getBounds(), { color: 'purple' });
-        //Add the center point if it's needed.
-        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(lat, lon), { color: 'black' });
-        pushpins.push(pin);
+        var pushpins = Microsoft.Maps.TestDataGenerator.getPushpins();
         pinLayer.add(pushpins);
 
         
@@ -63,35 +60,6 @@
         console.log(iscompare)
     }
 
- // function geocodeQuery(query) {
- //       //If search manager is not defined, load the search module.
- //       if (!searchManager) {
- //           //Create an instance of the search manager and call the geocodeQuery function again.
- //           Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
- //               searchManager = new Microsoft.Maps.Search.SearchManager(map);
- //               geocodeQuery(query);
- //           });
- //       } else {
- //           var searchRequest = {
- //               where: query,
- //               callback: function (r) {
- //                   //Add the first result to the map and zoom into it.
- //                   if (r && r.results && r.results.length > 0) {
- //                       var pin = new Microsoft.Maps.Pushpin(r.results[0].location);
- //                       //map.center(r.results[0].location)
- //                       map.entities.push(pin);
- //                       map.setView({ bounds: r.results[0].bestView });
- //                   }
- //               },
- //               errorCallback: function (e) {
- //                   //If there is an error, alert the user about it.
- //                   alert("No results found.");
- //               }
- //           };
- //           //Make the geocode request.
- //           searchManager.geocode(searchRequest);
- //       }
- //   }
     
     function isochroneSearch() {
         //These are values of carbon footprints of Foods
@@ -149,12 +117,7 @@
              console.log("removed")
              }
          }
-        // Get all the pushpins from the pinLayer.
-        var pins = pinLayer.getPrimitives();
-        //Clear any previously selected data.
-        for (var i = 0; i < pins.length; i++) {
-            pins[i].setOptions({ color: 'purple' });
-        }
+  
         
         //Create the REST isochrone query URL.
         var url = 'https://dev.virtualearth.net/REST/v1/Routes/Isochrones?&optimize=distance&travelMode=driving';
@@ -177,12 +140,12 @@
             searchArea = getIsochronePolygons(data);
             if (searchArea) {
                 //Find all intersection pushpins in the search area polygon.
-                var selectedPins = findIntersectingData(searchArea);
+                //var selectedPins = findIntersectingData("");
                 //Do something with the selected pushpins.
                 //Add the isochrone polygon to the map for visualization.
                 map.entities.push(searchArea);
             } else {
-                alert('Unable to generate isochrone.');
+                alert('Selected Value is less than 1km.');
             }
         }, function (error) {
             alert('An error occured when requesting the isochrone.');
@@ -229,40 +192,7 @@
         return null;
     }
     //Find all pushpins on the map that intersect with the search area.
-    function findIntersectingData(searchArea) {
-        if (searchArea) {
-            //Get all the pushpins from the pinLayer.
-            var pins = pinLayer.getPrimitives();
-            //Using spatial math find all pushpins that intersect with the drawn search area.
-            //The returned data is a copy of the intersecting data and not a reference to the original shapes, 
-            //so making edits to them will not cause any updates on the map.
-            var intersectingPins = Microsoft.Maps.SpatialMath.Geometry.intersection(pins, searchArea);
-            //The data returned by the intersection function can be null, a single shape, or an array of shapes. 
-            if (intersectingPins) {
-                //For ease of usem wrap individudal shapes in an array.
-                if (intersectingPins && !(intersectingPins instanceof Array)) {
-                    intersectingPins = [intersectingPins];
-                }
-                var selectedPins = [];
-                
-                //Loop through and map the intersecting pushpins back to their original pushpins by comparing their coordinates.
-                for (var j = 0; j < intersectingPins.length; j++) {
-                    for (var i = 0; i < pins.length; i++) {     
-                        if (Microsoft.Maps.Location.areEqual(pins[i].getLocation(), intersectingPins[j].getLocation())) {
-                            //Set the selected pin color to red.
-                            pins[i].setOptions({ color: 'red' });
-                            selectedPins.push(pins[i]);
-                            break;
-                        }
-                    }
-                }
-               
-                //Return the pushpins that were selected.
-                return selectedPins;
-            }
-        }
-        return null;
-    }
+    
     function callRestServiceCORS(requestUrl, callback, errorCallback) {
         if (callback) {
             var http = new XMLHttpRequest();
