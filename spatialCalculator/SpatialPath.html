@@ -128,7 +128,14 @@
         var co2etokm = co2evalue * 3.73;
         
         //print value of selected product
-        document.getElementById("totalvalue").value = co2evalue + " co2e, " + co2etokm  +" km";
+        if(iscompare){
+            document.getElementById("totalvalue").value = document.getElementById("totalvalue").value + document.getElementById("foodType").value + ": " + co2evalue + " co2e, " + co2etokm  +" km -- ";
+        }
+        else
+        {
+            document.getElementById("totalvalue").value = document.getElementById("foodType").value + ": "+ co2evalue + " co2e, " + co2etokm  +" km -- ";
+        }
+       
        
 
 

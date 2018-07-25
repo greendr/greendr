@@ -67,6 +67,8 @@
     {
         //map.layers.clear();
         map.entities.clear();
+        document.getElementById("totalvalue").value = "";
+        PolyColor = 0;
         //map.entities.remove(searchArea);
     }
     
@@ -116,7 +118,7 @@
         var co2etokm = co2evalue * 3.73;
         
         //print value of selected product
-        document.getElementById("totalvalue").value = co2evalue + " co2e, " + co2etokm  +" km";
+        document.getElementById("totalvalue").value = (document.getElementById("totalvalue").value + selectedfood + ": " + co2evalue + " co2e, " + co2etokm  +" km -- ");
        
 
 
@@ -198,7 +200,7 @@
                     }
                     else{
                         polygons.push(new Microsoft.Maps.Polygon(rings,{ fillColor: new Microsoft.Maps.Color(50, PolyColor, 255-PolyColor, PolyColor)}));
-                        PolyColor = PolyColor + 50;
+                        PolyColor += 20;
                         console.log(PolyColor)
                     }
                 }
@@ -307,13 +309,11 @@
         </select> 
         
         <br/><br/>
-        <input type="button" value="Find the equivalent" onclick="compareisochroneSearch()"/>
-        <br/><br/>
+        <input type="button" value="Find the equivalent" onclick="compareisochroneSearch()"/> 
         <input type="button" value="Clear Map" onclick="clearMap()"/>
 
         <br/><br/>
-        Total : <output id="totalvalue">
-                
+        Total : <output id="totalvalue" />
     </fieldset>
 
     <br/><br/>
