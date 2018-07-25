@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <script type='text/javascript'>
     var map, searchArea, pinLayer;
-    var iscompare = false;
+    var iscompare = true;
     var PolyColor = 0;
 
     function GetMap()
@@ -63,37 +63,25 @@
         console.log(iscompare)
     }
 
- // function geocodeQuery(query) {
- //       //If search manager is not defined, load the search module.
- //       if (!searchManager) {
- //           //Create an instance of the search manager and call the geocodeQuery function again.
- //           Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
- //               searchManager = new Microsoft.Maps.Search.SearchManager(map);
- //               geocodeQuery(query);
- //           });
- //       } else {
- //           var searchRequest = {
- //               where: query,
- //               callback: function (r) {
- //                   //Add the first result to the map and zoom into it.
- //                   if (r && r.results && r.results.length > 0) {
- //                       var pin = new Microsoft.Maps.Pushpin(r.results[0].location);
- //                       //map.center(r.results[0].location)
- //                       map.entities.push(pin);
- //                       map.setView({ bounds: r.results[0].bestView });
- //                   }
- //               },
- //               errorCallback: function (e) {
- //                   //If there is an error, alert the user about it.
- //                   alert("No results found.");
- //               }
- //           };
- //           //Make the geocode request.
- //           searchManager.geocode(searchRequest);
- //       }
- //   }
+    function clearMap()
+    {
+        //map.layers.clear();
+        map.entities.clear();
+        //map.entities.remove(searchArea);
+    }
     
-    function isochroneSearch() {
+    function compareisochroneSearch()
+    {
+        var foods = document.getElementById("comparefood").value.split('-');
+        foods.forEach(element => {
+            console.log(element)
+            isochroneSearch(element);
+        });
+        
+
+    }
+
+    function isochroneSearch(selectedfood) {
         //These are values of carbon footprints of Foods
         //These are co2e values of per kilos
         var foodList = {
@@ -116,7 +104,7 @@
         }
 
         //retrieve co2e value of selected food 
-        var co2ekg = foodList[document.getElementById("foodType").value];
+        var co2ekg = foodList[selectedfood];
         console.log(co2ekg)
 
         //This is calculating value of selected food with the provided grams.
@@ -305,34 +293,23 @@
         In this demo you'll see if you eat below foods what's equivalent of the carbon dioxide emissions if you drive a car. 
 
         <br/><br/>
-        Total food (gr): <input type="text" id="foodgrams" value="250">
+        Total food (gr): <input type="text" id="foodgrams" value="150">
         <br/><br/>
         Food Type: 
-        <select id="foodType">
-            <option value="Lamb" selected="selected">Lamb</option>
-            <option value="Beef">Beef</option>
-            <option value="Cheese">Cheese</option>
-            <option value="Pork">Pork</option>
-            <option value="Turkey">Turkey</option>
-            <option value="Chicken">Chicken</option>
-            <option value="Tuna">Tuna</option>
-            <option value="Eggs">Eggs</option>
-            <option value="Potatoes">Potatoes</option>
-            <option value="Rice">Rice</option>
-            <option value="Nuts">Nuts</option>
-            <option value="Beans/tofu">Beans/tofu</option>
-            <option value="Vegetables">Vegetables</option>
-            <option value="Milk">Milk</option>
-            <option value="Fruit">Fruit</option>
-            <option value="Lentils">Lentils</option>
+        <select id="comparefood">
+            <option value="Lamb-Beef" selected="selected">Lamb vs Beef</option>
+            <option value="Beef-Cheese">Beef vs Cheese</option>
+            <option value="Turkey-Chicken">Turkey vs Chicken</option>
+            <option value="Chicken-Tuna">Chicken vs Tuna</option>
+            <option value="Beef-Beans/tofu">Beef vs Beans/tofu</option>
+            <option value="Vegetables-Milk">Vegetables vs Milk</option>
+            <option value="Fruit-Lentils">Fruit vs Lentils</option>
         </select> 
         
         <br/><br/>
-        <input type="button" value="Find the equivalent" onclick="isochroneSearch()"/>
-
+        <input type="button" value="Find the equivalent" onclick="compareisochroneSearch()"/>
         <br/><br/>
-        Will you compare nutrition? 
-        <input type="checkbox" name="comparebox"  onclick="iscomparechecked()"> Compare <br>
+        <input type="button" value="Clear Map" onclick="clearMap()"/>
 
         <br/><br/>
         Total : <output id="totalvalue">
@@ -343,9 +320,62 @@
     Notes: <br/>
     for more information about how to calculate the CO2 emission from the fuel consumption?: 
     <a href="http://ecoscore.be/en/info/ecoscore/co2">http://ecoscore.be/en/info/ecoscore/co2</a>
-    <br/> for more nutrition comparison: <a href="https://foodmetrics.org/">https://foodmetrics.org/</a>
-   
 
-  
+
+    <br/><br/> for more nutrition comparison: <a href="https://foodmetrics.org/">https://foodmetrics.org/</a>
+    <div _ngcontent-byp-1="" class="featured">
+        <ul _ngcontent-byp-1="">
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-apples-raw-with-skin-vs-oranges-raw-all-commercial-varieties;f1=09003;f2=09200">Apple <span _ngcontent-byp-1="" class="versus">vs</span> Orange</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-beef-ground-85-lean-meat--15-fat-patty-cooked-broiled-vs-chicken-broilers-or-fryers-meat-and-skin-cooked-stewed-vs-pork-fresh-loin-whole-separable-lean-and-fat-cooked-broiled;f1=23568;f2=05010;f3=10022">Beef <span _ngcontent-byp-1="" class="versus">vs</span> Chicken <span _ngcontent-byp-1="" class="versus">vs</span> Pork</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                   <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-carrots-raw-vs-carrots-cooked-boiled-drained-without-salt;f1=11124;f2=11125">Raw Carrots <span _ngcontent-byp-1="" class="versus">vs</span> Cooked Carrots</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-mcdonalds-big-mac-vs-burger-king-whopper-with-cheese;f1=21237;f2=21253">Big Mac <span _ngcontent-byp-1="" class="versus">vs</span> Whopper</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                     <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-bananas-raw-vs-candies-milk-chocolate;f1=09040;f2=19120">Banana <span _ngcontent-byp-1="" class="versus">vs</span> Chocolate</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-alcoholic-beverage-beer-regular-all-vs-alcoholic-beverage-wine-table-all;f1=14003;f2=14084">Beer <span _ngcontent-byp-1="" class="versus">vs</span> Wine</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-broccoli-raw-vs-cauliflower-raw-vs-spinach-raw;f1=11090;f2=11135;f3=11457">Broccoli <span _ngcontent-byp-1="" class="versus">vs</span> Cauliflower <span _ngcontent-byp-1="" class="versus">vs</span> Spinach</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-egg-whole-cooked-hard-boiled-vs-chicken-broilers-or-fryers-breast-meat-only-cooked-roasted;f1=01129;f2=05064">Egg <span _ngcontent-byp-1="" class="versus">vs</span> Chicken</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-nuts-almonds-vs-nuts-walnuts-english-vs-peanuts-all-types-raw;f1=12061;f2=12155;f3=16087">Almond <span _ngcontent-byp-1="" class="versus">vs</span> Walnuts <span _ngcontent-byp-1="" class="versus">vs</span> Peanuts</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                     <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-egg-white-raw-fresh-vs-egg-yolk-raw-fresh;f1=01124;f2=01125">Egg White <span _ngcontent-byp-1="" class="versus">vs</span> Egg Yolk</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                     <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-fish-salmon-sockeye-canned-drained-solids-vs-fish-tuna-light-canned-in-oil-drained-solids-vs-fish-sardine-atlantic-canned-in-oil-drained-solids-with-bone-vs-steelhead-trout-boiled-canned-alaska-native;f1=15087;f2=15119;f3=15088;f4=35181">Salmon <span _ngcontent-byp-1="" class="versus">vs</span> Tuna <span _ngcontent-byp-1="" class="versus">vs</span> Sardine <span _ngcontent-byp-1="" class="versus">vs</span> Trout</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-cabbage-raw-vs-lettuce-green-leaf-raw-vs-lettuce-iceberg-includes-crisphead-types-raw;f1=11109;f2=11253;f3=11252">Cabbage <span _ngcontent-byp-1="" class="versus">vs</span> Lettuce <span _ngcontent-byp-1="" class="versus">vs</span> Iceberg</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-beans-black-mature-seeds-cooked-boiled-without-salt-vs-lentils-mature-seeds-cooked-boiled-without-salt;f1=16015;f2=16070">Beans <span _ngcontent-byp-1="" class="versus">vs</span> Lentils</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-bread-white-commercially-prepared-includes-soft-bread-crumbs-vs-bread-whole-wheat-commercially-prepared;f1=18069;f2=18075">White Bread <span _ngcontent-byp-1="" class="versus">vs</span> Whole Wheat Bread</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-strawberries-raw-vs-cherries-sweet-raw;f1=09316;f2=09070">Strawberries <span _ngcontent-byp-1="" class="versus">vs</span> Cherries</a>
+              </li>
+              <li _ngcontent-byp-1="">
+                    <a _ngcontent-byp-1="" href="https://foodmetrics.org/compare-rice-brown-long-grain-cooked-vs-rice-white-long-grain-regular-unenriched-cooked-without-salt;f1=20037;f2=20445">Brown Rice <span _ngcontent-byp-1="" class="versus">vs</span> White Rice</a>
+              </li>
+        </ul>
+  </div>
+    
+
 </body>
 </html>
